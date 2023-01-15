@@ -45,14 +45,14 @@ import { faPaperPlane, faVideo } from '@fortawesome/free-solid-svg-icons'
 				<KeyboardAvoidingView style={[styles.foot]}>
 					<Button
 						title='Login to send message'
-						onPress={login}
+						onPress={() => props.navigation.navigate('Login')}
 					/>
 				</KeyboardAvoidingView>
 			)
 		}
 	}
 
-const Private = () => {
+const Private = (props:any) => {
 	const database = getDatabase();
 	const {name, loginstate, uid, login, privatechat, videostat, setVideostat, setScreen} = useContext(UserContext)
 	let userArr = [uid, privatechat]
@@ -187,7 +187,7 @@ const Private = () => {
 		<View style={styles.main}>
 			<List styles={styles} messages={messages} renderItem={renderItem}/>
 		</View>
-		<InputArea currmessage={currmessage} send={handleSend} login={login} loginstate={loginstate} setCurrmessage={setCurrmessage}/>
+		<InputArea currmessage={currmessage} send={handleSend} navigation={props.navigation} login={login} loginstate={loginstate} setCurrmessage={setCurrmessage}/>
 	</View>
 	)
 }

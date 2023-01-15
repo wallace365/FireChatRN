@@ -35,7 +35,7 @@ export default function App() {
 	const collRef = collection(db, 'users')
 
 	const login = () => {
-		console.log("Login")
+		console.log('Login')
 	}
 
 	const logOut = () => {
@@ -63,6 +63,18 @@ export default function App() {
 	const MenuScreen = () => {
 		return (
 			<Menu navigation={useNavigation()} />
+		)
+	}
+
+	const PrivateScreen = () => {
+		return (
+			<Private navigation={useNavigation()} />
+		)
+	}
+
+	const GlobalScreen = () => {
+		return (
+			<Global navigation={useNavigation()} />
 		)
 	}
 
@@ -117,15 +129,15 @@ export default function App() {
 	}, [screen])
 
   return (
-		<UserContext.Provider value={{name, setName, loginstate, setLoginstate, uid, login, logOut, users, privatechat, setPrivatechat, videostat, setVideostat, setPrivatechatname, screen, setScreen }}>
+		<UserContext.Provider value={{name, setName, loginstate, setLoginstate, uid, setUid, login, logOut, users, privatechat, setPrivatechat, videostat, setVideostat, setPrivatechatname, screen, setScreen }}>
 			<StatusBar style='auto' />
 			{uid != '' && screen != 'private' ? <Notification privatechat={privatechat} /> : null}
 			<SafeAreaView style={{ flex: 1 }}>
 				<NavigationContainer independent={true}>
 					<Stack.Navigator>
 						<Stack.Screen name="Home" component={HomeScreen} options={{ headerTitle: () => <Header navigation={useNavigation()} /> }}/>
-						<Stack.Screen name="Private" component={Private} options={{ headerTitle: privatechatname }}/>
-						<Stack.Screen name="Global" component={Global} />
+						<Stack.Screen name="Private" component={PrivateScreen} options={{ headerTitle: privatechatname }}/>
+						<Stack.Screen name="Global" component={GlobalScreen} />
 						<Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
 						<Stack.Screen name="Menu" component={MenuScreen} />
 					</Stack.Navigator>

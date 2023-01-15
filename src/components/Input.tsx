@@ -39,7 +39,7 @@ const InputArea = (props:any) => {
 			<KeyboardAvoidingView style={[styles.foot]}>
 				<Button
 					title='Login to send message'
-					onPress={login}
+					onPress={() => props.navigation.navigate('Login')}
 				/>
 			</KeyboardAvoidingView>
 		)

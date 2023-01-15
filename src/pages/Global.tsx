@@ -113,7 +113,7 @@ export default function Global(props:any) {
 			<View style={[styles.globalListContainer]}>
 				<List styles={styles} messages={messages} renderItem={renderItem}/>
 			</View>
-			<InputArea currmessage={currmessage} send={handleSend} login={login} loginstate={loginstate} setCurrmessage={setCurrmessage}/>
+			<InputArea currmessage={currmessage} send={handleSend} navigation={props.navigation} login={login} loginstate={loginstate} setCurrmessage={setCurrmessage}/>
 		</SafeAreaView>
 	)
 }

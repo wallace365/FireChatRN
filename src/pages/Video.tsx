@@ -101,7 +101,7 @@ const YtPlayer = (props:any) => {
 		}
 	}, [vid])
 	return (
-		<View style={[styles.player]}>
+		<View pointerEvents={vid[vid.length-1].uid != uid ? 'none' : 'auto'} style={[styles.player]}>
 			<YoutubePlayer
 			ref={video}
 			height={300}
