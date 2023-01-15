@@ -53,13 +53,14 @@ const LinkPlayer = (props:any) => {
 
 const YtPlayer = (props:any) => {
 	const vid = props.vid
-	const database = getDatabase();
 	const {uid, privatechat} = useContext(UserContext)
 	let userArr = [uid, privatechat]
 	userArr = userArr.sort()
-	const docName = "video" + userArr[0] + userArr[1]
 	const video = useRef(null)
+
+	const [state, setState] = useState('paused')
 	const [position, setPosition] = useState(0)
+
 	let link = props.uri
 	if (link.includes('watch?v=')) {
 		link = link.split('watch?v=')[1]
@@ -71,18 +72,27 @@ const YtPlayer = (props:any) => {
 		link = link
 	}
 	const onChangeState = async (state:any) => {
+		console.log(vid[vid.length-1])
 		let time = await video.current.getCurrentTime()
 		if (state == 'playing') {
-			props.playvideo(props.uri, time)
-			console.log(video)
+			if (vid[vid.length-1].uid == uid) {
+				props.playvideo(props.uri, time)
+			}
 		} else if (state == 'paused') {
-			props.pausevideo(props.uri, time)
+			if (vid[vid.length-1].uid == uid) {
+				props.pausevideo(props.uri, time)
+			}
 		}
 	}
 	useEffect(() => {
 		if (vid && vid.length > 0) {
 			const data = vid[vid.length -1]
 			if (data.uid != uid && data.action == 'play') {
+				if (position != data.seek) {
+					setPosition(data.seek)
+					video.current.seekTo(data.seek)
+				}
+			} else if (data.uid != uid && data.action == 'pause') {
 				if (position != data.seek) {
 					setPosition(data.seek)
 					video.current.seekTo(data.seek)
@@ -115,7 +125,7 @@ const Player = (props:any) => {
 	}, [props.vid])
 	const BackBtn = () => {
 		return (
-			<View style={[styles.back]}>
+			<View style={[styles.controller]}>
 				<View>
 					<Text style={[styles.notif]}>
 					{data ?
@@ -127,23 +137,25 @@ const Player = (props:any) => {
 					: null}
 					</Text>
 				</View>
-				<TouchableOpacity
-					onPress={() => {
-						props.killvideo(props.uri)
-						props.setView('selector')
-					}}
-				>
-					<FontAwesomeIcon icon={faCircleXmark} size={30} color='white' />
-				</TouchableOpacity>
+				<View>
+					<TouchableOpacity
+						onPress={() => {
+							props.killvideo(props.uri)
+							props.setView('selector')
+						}}
+					>
+						<FontAwesomeIcon icon={faCircleXmark} size={30} color='white' />
+					</TouchableOpacity>
+				</View>
 			</View>
 		)
 	}
 	return (
 		<>
-			<BackBtn />
 			{
 				props.uri.includes('youtube.com') || props.uri.includes('youtu.be') ? <YtPlayer uri={props.uri} playvideo={props.playvideo} pausevideo={props.pausevideo} seekvideo={props.seekvideo} setView={props.setView} vid={props.vid} /> : <LinkPlayer uri={props.uri} playvideo={props.playvideo} pausevideo={props.pausevideo} seekvideo={props.seekvideo} setView={props.setView} />
 			}
+			<BackBtn />
 		</>
 	)
 }
@@ -238,7 +250,8 @@ const styles = StyleSheet.create({
 		color: 'white'
 	},
 
-	back: {
+	controller: {
+		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
@@ -247,6 +260,7 @@ const styles = StyleSheet.create({
 
 	player: {
 		flex: 1,
+		flexGrow: 5,
 	},
 
 	textInput: {
