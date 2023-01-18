@@ -13,24 +13,25 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +162 App.tsx
+badd +132 App.tsx
 badd +7 src/pages/Home.tsx
-badd +59 src/stylesheets/Main.tsx
-badd +132 src/pages/LoginForm.tsx
-badd +77 src/pages/Global.tsx
+badd +2 src/stylesheets/Main.tsx
+badd +83 src/pages/LoginForm.tsx
+badd +116 src/pages/Global.tsx
 badd +25 src/components/Header.tsx
 badd +21 src/pages/Menu.tsx
-badd +131 src/pages/Private.tsx
+badd +48 src/pages/Private.tsx
 badd +11 src/components/List.tsx
 badd +19 src/components/Message.tsx
-badd +8 src/pages/Video.tsx
+badd +127 src/pages/Video.tsx
 badd +42 app.json
+badd +42 src/components/Input.tsx
 argglobal
 %argdel
 $argadd App.tsx
 edit App.tsx
 argglobal
-balt src/pages/Private.tsx
+balt src/pages/LoginForm.tsx
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -41,12 +42,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 162 - ((27 * winheight(0) + 19) / 38)
+let s:l = 132 - ((26 * winheight(0) + 19) / 38)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 162
-normal! 040|
+keepjumps 132
+normal! 091|
 lcd /workspaces/FireChatRN
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
@@ -61,7 +62,6 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
-nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :
